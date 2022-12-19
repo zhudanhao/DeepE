@@ -7,7 +7,7 @@
 </p>
 
 <h2 align="center">
-  Overview of InteractE
+  Overview of DeepE
   <img align="center"  src="./overview.png" alt="...">
 </h2>
 
