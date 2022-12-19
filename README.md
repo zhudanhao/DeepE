@@ -1,7 +1,10 @@
 <h1 align="center">
   DeepE
 </h1>
-<a href="https://arxiv.org/pdf/2211.04620"><img src="http://img.shields.io/badge/Supplementary-PDF-green.svg"></a>
+<p align="center">
+  <a href="https://arxiv.org/pdf/2211.04620"><img src="http://img.shields.io/badge/Supplementary-PDF-green.svg"></a>
+  </a>
+</p>
 
 ## paper：
 The code for paper： DeepE: a deep neural network for knowledge graph embedding.
