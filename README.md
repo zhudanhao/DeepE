@@ -8,7 +8,7 @@
 
 <h2 align="center">
   Overview of InteractE
-  <img align="center"  src="./overview1.png" alt="...">
+  <img align="center"  src="./overview.png" alt="...">
 </h2>
 
 ## paper：
