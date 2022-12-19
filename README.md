@@ -1,9 +1,9 @@
 <h1 align="center">
   DeepE
 </h1>
+<h4 align="center">DeepE: a deep neural network for knowledge graph embedding</h4>
 <p align="center">
-  <a href="https://arxiv.org/pdf/2211.04620"><img src="http://img.shields.io/badge/Supplementary-PDF-green.svg"></a>
-  </a>
+  <a href="https://arxiv.org/pdf/2211.04620"><img src="http://img.shields.io/badge/Paper-PDF-red.svg"></a>
 </p>
 
 ## paper：
