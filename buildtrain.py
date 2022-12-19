@@ -4,7 +4,7 @@ import torch
 import random
 import copy
 def evaluate(model,x_test,batch_size,target_dict):
-    #target_dict:用于filter
+
     len_test = len(x_test)    
     batch_num = math.ceil(len(x_test) / batch_size)
     tail_scores_all = []
