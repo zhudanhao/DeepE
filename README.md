@@ -6,6 +6,11 @@
   <a href="https://arxiv.org/pdf/2211.04620"><img src="http://img.shields.io/badge/Paper-PDF-red.svg"></a>
 </p>
 
+<h2 align="center">
+  Overview of InteractE
+  <img align="center"  src="./overview.png" alt="...">
+</h2>
+
 ## paper：
 The code for paper： DeepE: a deep neural network for knowledge graph embedding.
 https://arxiv.org/pdf/2211.04620
