@@ -7,7 +7,6 @@
 </p>
 
 <h2 align="center">
-  Overview of DeepE
   <img align="center"  src="./overview.png" alt="...">
 </h2>
 
