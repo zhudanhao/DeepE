@@ -153,7 +153,7 @@ class DeepE(torch.nn.Module):
         x = self.source_layers(x)
         
         weight = self.emb.weight
-        #对于weight，bn的作用相当于维度归一化
+      
         
         weight = self.target_bn(weight)
         weight = self.target_layers(weight)
