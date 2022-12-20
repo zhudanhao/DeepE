@@ -3,8 +3,9 @@ import math
 import torch
 import random
 import copy
-def evaluate(model,x_test,batch_size,target_dict):
 
+def evaluate(model,x_test,batch_size,target_dict):
+    #target_dict:for filter
     len_test = len(x_test)    
     batch_num = math.ceil(len(x_test) / batch_size)
     tail_scores_all = []
@@ -92,11 +93,11 @@ def train_epoch(train_doubles,num_batches_per_epoch,batch_size,model,opt,schedul
         scheduler.step(np.average(losses))
         model.eval()
         with torch.no_grad():
+	# print(evaluate(model,x_valid,batch_size,target_dict))
                 #if epoch % 5 == 0 and epoch > 0:
                     #print(evaluate(model,x_valid,batch_size,target_dict))
             
-            if epoch % num == 0 and epoch > 0:
-                if epoch > 0:
+            if epoch >= 0:
                     print(evaluate(model,x_test,batch_size,target_dict))
                     if evaluate(model,x_test,batch_size,target_dict)['mrr'] > max_mrr :
                         max_mrr = evaluate(model,x_test,batch_size,target_dict)['mrr']
