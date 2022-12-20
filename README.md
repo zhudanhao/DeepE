@@ -34,7 +34,7 @@ To reproduce the results,
   If you want to scan the results, you can turn to "./scripts".
 
 ## Model
-  You can download our models through this link:https://drive.google.com/file/d/1N5zE7BuPHrYsOyYxxAPTtJa1fc6S6yvV/view?usp=sharing, https://drive.google.com/file/d/1u-dKBOLQHkqTCj7pmo-3RCut2C2I36Is/view?usp=sharing
+  You can download our models through this link:https://drive.google.com/file/d/1nZPXUhSJniaOMaPp3wF-_LFfEuBpWxw_/view?usp=share_link
 
 ## Citation:
 @article{danhao2022deepe,
