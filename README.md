@@ -14,7 +14,7 @@
 Recently, neural network based methods have shown their power in learning more expressive features on the task of knowledge graph em- bedding (KGE). However, the performance of deep methods often falls behind the shallow ones on simple graphs. One possible reason is that deep models are difficult to train, while shallow models might suffice for accurately representing the structure of the simple KGs.
 In this paper, we propose a neural network based model, named DeepE, to address the problem, which stacks multiple building block- s to predict the tail entity based on the head en- tity and the relation. Each building block is an addition of a linear and a non-linear function. The stacked building blocks are equivalent to a group of learning functions with different non-linear depth. Hence, DeepE allows deep functions to learn deep features, and shallow functions to learn shallow features. Through extensive experiments, we find DeepE outper- forms other state-of-the-art baseline methods. A major advantage of DeepE is the robustness. DeepE achieves a Mean Rank (MR) score that is 6%, 30%, 65% lower than the best base- line methods on FB15k-237, WN18RR and YAGO3-10. Our design makes it possible to train much deeper networks on KGE, e.g. 40 layers on FB15k-237, and without scarifying precision on simple relations.
 
-## paper:
+## Paper:
 The code for paper： DeepE: a deep neural network for knowledge graph embedding.
 https://arxiv.org/pdf/2211.04620
 
@@ -32,6 +32,9 @@ To reproduce the results,
   ```
 ## Log
   If you want to scan the results, you can turn to "./scripts".
+
+## Model
+  You can download our models through this link:https://drive.google.com/file/d/1N5zE7BuPHrYsOyYxxAPTtJa1fc6S6yvV/view?usp=sharing, https://drive.google.com/file/d/1u-dKBOLQHkqTCj7pmo-3RCut2C2I36Is/view?usp=sharing
 
 ## Citation:
 @article{danhao2022deepe,
