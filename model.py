@@ -153,7 +153,7 @@ class DeepE(torch.nn.Module):
         x = self.source_layers(x)
         
         weight = self.emb.weight
-      
+        
         
         weight = self.target_bn(weight)
         weight = self.target_layers(weight)
@@ -164,6 +164,3 @@ class DeepE(torch.nn.Module):
         pred = x
         
         return pred
-    
-    def l2_reg_loss(self):
-        return torch.mean(self.emb.weight.data ** 2) 

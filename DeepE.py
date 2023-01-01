@@ -9,12 +9,11 @@ from collections import Counter
 import random
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import copy
-from model import *
 from common import *
 from buildtrain import *
+from scipy.stats import rankdata
+from model import *
 
-setup_seed(2022)
-# torch.cuda.set_device(0)
 
 parser = ArgumentParser("DeepE", formatter_class=ArgumentDefaultsHelpFormatter, conflict_handler='resolve')
 parser.add_argument("--data_path", default="./data/", help="Data sources.")
@@ -46,13 +45,14 @@ parser.add_argument("--epoch",default=1000,type=int)
 parser.add_argument("--momentum",default=0.9,type=float)
 parser.add_argument("--save_name",default='wn18rr.pt')
 args = parser.parse_args()
-print(args)
-# Load data
+setup_seed(1234) if args.data_name == "WN18RR" else setup_seed(2022)
 print("Loading data...")
-
+cuda_num = int(args.device[-1])
+torch.cuda.set_device(cuda_num)
 train, valid, test, words_indexes, indexes_words, \
 headTailSelector, entity2id, id2entity, relation2id, id2relation = build_data(path=args.data_path, name=args.data_name)
 data_size = len(train)
+
 train_doubles,valid_doubles,test_doubles = get_doubles(train,valid,test,words_indexes)
 x_valid = np.array(valid_doubles).astype(np.int32)
 x_test = np.array(test_doubles).astype(np.int32)
@@ -66,12 +66,13 @@ model.init()
 
 if args.opt == 'Adam':
     opt = torch.optim.Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
-elif args.pt == 'SGD':
+elif args.opt == 'SGD':
     opt = torch.optim.SGD(model.parameters(),lr=args.learning_rate, momentum=args.momentum)
 scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(opt, 'min',factor=args.factor,verbose=args.verbose,min_lr=args.min_lr,patience=args.patience)
-model.emb.weight.data.requires_grad = True
+
+    
 num_batches_per_epoch = len(train_doubles)//args.batch_size+1
-model = train_epoch(train_doubles,num_batches_per_epoch,args.batch_size,model,opt,scheduler,x_test,target_dict,args.log_epoch,args.device,max_mrr=args.max_mrr,epoch=args.epoch)
+model = train_epoch(train_doubles,num_batches_per_epoch,args.batch_size,model,opt,scheduler,x_valid,target_dict,args.log_epoch,args.device,max_mrr=args.max_mrr,epoch=args.epoch,x_test=x_test)
 model.eval()
 torch.save(model, f'{args.save_name}')
 model = torch.load(args.save_name)

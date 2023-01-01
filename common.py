@@ -10,8 +10,7 @@ def setup_seed(seed):
     random.seed(seed)
     np.random.seed(seed)
     torch.backends.cudnn.deterministic = True
-
-
+    
 def get_doubles(train,valid,test,words_indexes):
     train_keys = list(train.keys())
     train_doubles = []

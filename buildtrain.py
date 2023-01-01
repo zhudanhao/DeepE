@@ -3,9 +3,11 @@ import math
 import torch
 import random
 import copy
+from scipy.stats import rankdata
+import random
 
 def evaluate(model,x_test,batch_size,target_dict):
-    #target_dict:for filter
+    #target_dict:用于filter
     len_test = len(x_test)    
     batch_num = math.ceil(len(x_test) / batch_size)
     tail_scores_all = []
@@ -61,16 +63,24 @@ def evaluate(model,x_test,batch_size,target_dict):
         hits10 = np.average(hits10)
         result = {'mr':mr, 'mrr':mrr, 'hits1':hits1, 'hits10':hits10}
         return result
+    
+    
     tail_result = cal_result(tail_scores_all,tail_label, x_test,target_dict)
     return {'mr':tail_result['mr'], 'mrr':tail_result['mrr'], 
             'hits@1':tail_result['hits1'], 'hits@10':tail_result['hits10']}
 
+def better_than(re1,re2):
+    if re1['mrr']>re2['mrr'] or re1['hits@10']>re2['hits@10']:
+        return True
+    else:
+        return False
 
 
-
-def train_epoch(train_doubles,num_batches_per_epoch,batch_size,model,opt,scheduler,x_test,target_dict,num,device,max_mrr=0,epoch=1000,max_hits1=0):
+def train_epoch(train_doubles,num_batches_per_epoch,batch_size,model,opt,scheduler,x_valid,target_dict,num,device,max_mrr=0,epoch=1000,max_hits1=0,x_test=None):
     model.to(device)
-    stop_num=0
+    stop_num = 0
+    previous_best = {'mr':-1,'mrr':-1,'hits@1':-1,'hits@10':-1,'epoch':-1}
+    stop_start_epoch = int(0.4 * epoch)
     for epoch in range(epoch):
         model.train()
         random.shuffle(train_doubles) 
@@ -82,33 +92,30 @@ def train_epoch(train_doubles,num_batches_per_epoch,batch_size,model,opt,schedul
             e1 = batch_h
             rel = batch_r
             e2_multi = batch_t
-
+            
             pred = model.forward(e1, rel)
 
-            loss = model.loss(pred, model.to_var(e2_multi)) #+ 1e-0* model.l2_reg_loss()
+            loss = model.loss(pred, model.to_var(e2_multi))
             loss.backward()
             opt.step()
             losses.append(loss.detach().cpu().numpy())
         print(epoch,'train loss:',np.average(losses))
         scheduler.step(np.average(losses))
         model.eval()
+        if epoch%10 == 0:
+            print('valid',evaluate(model,x_valid,batch_size,target_dict))
+            print('test',evaluate(model,x_test,batch_size,target_dict))
         with torch.no_grad():
-	# print(evaluate(model,x_valid,batch_size,target_dict))
-                #if epoch % 5 == 0 and epoch > 0:
-                    #print(evaluate(model,x_valid,batch_size,target_dict))
-            
-            if epoch >= 0:
-                    print(evaluate(model,x_test,batch_size,target_dict))
-                    if evaluate(model,x_test,batch_size,target_dict)['mrr'] > max_mrr :
-                        max_mrr = evaluate(model,x_test,batch_size,target_dict)['mrr']
+            if epoch >= stop_start_epoch:
+                    result = evaluate(model,x_valid,batch_size,target_dict)
+                    if stop_num >= 40:
+                        return best_model
+                    if better_than(result,previous_best):
+                        stop_num=0
+                    else:
+                        stop_num+=1  
+                    if result['mrr'] > previous_best['mrr']:
+                        previous_best = result
+                        previous_best['epoch'] = epoch
                         best_model = copy.deepcopy(model)
-                        #stop_num=0
-                    #elif evaluate(model,x_test,batch_size,target_dict)['hits@1'] > max_hits1:
-                        # max_hits1 = evaluate(model,x_test,batch_size,target_dict)['hits@1']
-                        # stop_num=0
-                    # else:
-                        # stop_num+=1
-            # if stop_num == 200:
-                # break
-                           
     return best_model
