@@ -76,4 +76,4 @@ model = train_epoch(train_doubles,num_batches_per_epoch,args.batch_size,model,op
 model.eval()
 torch.save(model, f'{args.save_name}')
 model = torch.load(args.save_name)
-print(evaluate(model,x_test,args.batch_size,target_dict))
+print("final result ",evaluate(model,x_test,args.batch_size,target_dict))
